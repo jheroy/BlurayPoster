@@ -206,6 +206,13 @@ TV:
     # tv.lg_webos.LGWebos
     # tv.oppo_hdmi.OppoHdmi
     # tv.hdfury.Hdfury
+    # tv.tcl_adb.TclAdbTV (仅测试 X11G 型号，需开启电视 ADB 调试，默认返回 Emby)
+    #
+    # tcv x11g 打开adb调试方法：
+    # 打开电视，进入 设置 > 系统 > 系统信息 (或 关于本机) -> 本机信息。
+    # 呼出ADB开关： 在此界面下（也就是有电视型号的界面），使用电视遥控器按顺序按下方向键：“上”、“下”、“左”、“右”。
+    # 开启调试： 界面上会跳出一个隐藏的“ADB”或“开发者模式”开关，将其设置为 “开启” 状态。
+    # !!!重要： 第一次启动BlurayPoster时要保证电视开机且adb开启， 启动后电视界面会询问是否允许调试，请允许。
   Executor: null
   # 电视或其它设备的IP, 改成你自己的
   IP: 192.168.1.12
@@ -218,6 +225,7 @@ TV:
   # app=xxxx 例如"app=netflix" 代表返回netflix app
   # hdmi=x 例如"hdmi=3"代表返回 hdmi 3输入源
   # oppo系列，如果希望结束后停留在HDMI输入 则填写hdmi=1；如果选择HDMI输入直通 则填写pass=1。
+  # tcl adb的app 只支持emby和kodi两种(如需其他app 可以自行修改)， hdmi支持1-4.
   PlayStopUri: null
 
 
