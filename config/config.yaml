@@ -96,6 +96,7 @@ TV:
     # tv.lg_webos.LGWebos
     # tv.oppo_hdmi.OppoHdmi
     # tv.hdfury.Hdfury
+    # tv.tcl_adb.TclAdbTV (仅测试 X11G 型号，需开启电视 ADB 调试，默认返回 Emby)
   Executor: null
   # 电视或其它设备的IP, 改成你自己的
   IP: 192.168.1.12
@@ -104,10 +105,11 @@ TV:
   # 播放机对应的HDMI口, 改成你自己的
   HDMI: 0
   # 播放结束后电视默认切换策略, 改成你自己的
-  # null 执行默认策略, sony为跳转到emby app, Lg为返回原来页面
+  # null 执行默认策略, sony为跳转到emby app, Lg为返回原来页面, tcl为返回 emby app
   # app=xxxx 例如"app=netflix" 代表返回netflix app
   # hdmi=x 例如"hdmi=3"代表返回 hdmi 3输入源
   # oppo系列，如果希望结束后停留在HDMI输入 则填写hdmi=1；如果选择HDMI输入直通 则填写pass=1。
+  # tcl adb的app 只支持emby和kodi两种， hdmi支持1-4.
   PlayStopUri: null
 
 
