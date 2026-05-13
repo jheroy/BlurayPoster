@@ -14,6 +14,7 @@ import time
 from logging.handlers import TimedRotatingFileHandler
 from configuration import Configuration
 from abstract_classes import *
+from external_api import ExternalApiServer
 
 
 def setup_logging(log_level_str):
@@ -105,6 +106,8 @@ if __name__ == "__main__":
             my_media = initialize_components(my_config)
             my_media.start_before()
             my_media.start()
+            external_api = ExternalApiServer(my_media, my_config.get("ExternalAPI"))
+            external_api.start()
             while True:
                 time.sleep(100)
         else:

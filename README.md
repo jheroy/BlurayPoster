@@ -114,6 +114,14 @@ Version: "1.0.0"
 # 日志级别(如果发生问题搞不定的，把info改成debug然后重启，再把出问题时候的日志发上来, 问题修复后再改回info)
 LogLevel: info
 
+# 外部接口：允许 Kodi 插件等外部程序通知 BlurayPoster 只监控播放状态
+ExternalAPI:
+  Enabled: false
+  Host: 0.0.0.0
+  Port: 8765
+  # 留空表示不校验；如果填写，调用方需要通过 X-BlurayPoster-Token 传同样的值
+  Token: ""
+
 
 # 媒体库配置
 Media:

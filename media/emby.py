@@ -476,6 +476,28 @@ class Emby(Media):
                                  self.on_message, self.on_play_begin,
                                  self.on_play_in_progress, self.on_play_end)
 
+    def monitor_external_play(self, payload=None):
+        """
+        Monitor playback that was started outside BlurayPoster.
+        """
+        if self._player is None:
+            logger.error("no player is ready")
+            return False
+        if not hasattr(self._player, "monitor_external_play"):
+            logger.error("player does not support external playback monitoring")
+            return False
+
+        logger.info("start external playback monitor, payload: %s", payload)
+        started = self._player.monitor_external_play(
+            self.on_message,
+            self.on_external_play_begin,
+            self.on_play_in_progress,
+            self.on_external_play_end
+        )
+        if started:
+            self._play_item = None
+        return started
+
     def _connect(self):
         """
         连接Emby服务器
@@ -524,6 +546,23 @@ class Emby(Media):
             except Exception as e:
                 logger.error(f"Exception during av play begin: {e}")
 
+    def on_external_play_begin(self, **kwargs):
+        """
+        外部调用已开始播放事件
+        :param kwargs:
+        :return:
+        """
+        if self._tv is not None:
+            try:
+                self._tv.play_begin(self.on_message)
+            except Exception as e:
+                logger.error(f"Exception during tv external play begin: {e}")
+        if self._av is not None:
+            try:
+                self._av.play_begin(self.on_message)
+            except Exception as e:
+                logger.error(f"Exception during av external play begin: {e}")
+
     def on_play_in_progress(self, **kwargs):
         """
         播放中事件
@@ -569,6 +608,23 @@ class Emby(Media):
                 self._av.play_end(self.on_message)
             except Exception as e:
                 logger.error(f"Exception during av play end: {e}")
+        self._play_item = None
+
+    def on_external_play_end(self, **kwargs):
+        """
+        外部调用播放结束事件
+        :return:
+        """
+        if self._tv is not None:
+            try:
+                self._tv.play_end(self.on_message)
+            except Exception as e:
+                logger.error(f"Exception during tv external play end: {e}")
+        if self._av is not None:
+            try:
+                self._av.play_end(self.on_message)
+            except Exception as e:
+                logger.error(f"Exception during av external play end: {e}")
         self._play_item = None
 
     def start_before(self, **kwargs):

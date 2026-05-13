@@ -170,7 +170,7 @@ class Pioneer(Player):
         self._play_status = 0
         last_qry_time = time.time()
         last_report_time = 0
-        timeout = 15
+        timeout = max(self._play_start_timeout, 15)
 
         while True:
             time.sleep(1)
@@ -306,3 +306,21 @@ class Pioneer(Player):
         thread = threading.Thread(target=self._track_play_status)
         thread.daemon = True
         thread.start()
+
+    def monitor_external_play(self, on_message, on_play_begin, on_play_in_progress, on_play_end, **kwargs):
+        """
+        Monitor playback that was already started by another integration.
+        """
+        if self._play_status >= 0:
+            on_message("Notification", "movie is playing or prepare to playing, wait!")
+            return False
+
+        self._on_message = on_message
+        self._on_play_begin = on_play_begin
+        self._on_play_in_progress = on_play_in_progress
+        self._on_play_end = on_play_end
+
+        thread = threading.Thread(target=self._track_play_status)
+        thread.daemon = True
+        thread.start()
+        return True
